@@ -46,6 +46,7 @@ class alienShip extends Ship {
 
 // player object is an instance of the player sub-class
 const player = new heroShip('USS Assembly')
+
 // creating the minimum 6 enemiesby grouping them into a fleet array!
 let alienFleet = []
 for (let i = 0; i < 6; i++){
@@ -56,7 +57,7 @@ for (let i = 0; i < 6; i++){
 // Element codes for DOM manipulation && Floating Variables
 ///////////
 //Flag to notify turns
-let flag
+let flag = false 
 //Attack Button
 const attackBtn = document.querySelector('#attack')
 
@@ -102,13 +103,15 @@ document.addEventListener('DOMContentLoaded', function(evt) {
         }
 
     contBtn.addEventListener('click', function(evt){
-        round.textContent = `Wave 1 : Player Turn`
+        round.innerHTML = `Wave 1 : Player Turn`
+        console.log(round.textContent)
         flag = true;
         console.log('Clicked')
 
-for(let i = 1; alienFleet.length != 0; i++){
-
-    if(flag = true){
+//Loops thru turns until there is no more aliens left (theoretically)
+for(let i = 6; alienFleet.length > 0; i--){
+    //Player turn
+    if(flag === true){
         // Player hitting an alien ship
         attackBtn.addEventListener('click', function(evt){
             if(Math.random() < player.accuracy){
@@ -119,6 +122,7 @@ for(let i = 1; alienFleet.length != 0; i++){
                 prompt.textContent = `You hit ${alienFleet[0].name}! They have ${alienFleet[0].hullHp}HP left!`;
                 console.log(`You hit ${alienFleet[0].name}! They have ${alienFleet[0].hullHp}HP left!`);
                 flag = false;
+
                     // Player killing an alien ship
                     if(alienFleet[0].hullHp <= 0){
                         prompt.textContent = `${alienFleet[0].name} has been de-comissioned! OO-RAH!`
@@ -127,15 +131,18 @@ for(let i = 1; alienFleet.length != 0; i++){
                         round.textContent = `Wave ${roundNumber++}`
                         flag = false;
                     };
-            }else{
+            //Player hit missed
+            }else if(Math.random() > player.accuracy){
                 prompt.textContent = "You missed! Re-calibrating heads-up display!"
                 console.log('You missed! Re-calibrating heads-up display!');
                 flag = false;
             };
         });
     };
-    if(flag = false){
+    //Alien turn
+    if(flag === false){
         round.textContent = `Wave ${roundNumber} : Zetan Attack`
+
         // Alien hit registering
         if(Math.random() < alienFleet[0].accuracy) {
             alienFleet[0].attack(player);
@@ -144,6 +151,7 @@ for(let i = 1; alienFleet.length != 0; i++){
             pStats.textContent += 'Accuracy : 0.7';
             console.log(`You have been hit! Your hull integrity has dropped to ${player.hullHp}!`);
             flag = true
+
             // Player killed by alien
             if(player.hullHp <= 0){
                 prompt.textContent = 'You Lose. \r\n';
@@ -151,7 +159,8 @@ for(let i = 1; alienFleet.length != 0; i++){
                 console.log(`${player.name} this is ground support do you read!...we lost ${player.name}...`)
                 break;
             };
-        }else{
+        //Alien hit missed
+        }else if(Math.random() > alienFleet[0].accuracy){
             prompt.textContent = `The ${alienFleet[0]} missed their attack!`
             console.log(`The ${alienFleet[0]} missed their attack!`)
             flag = true
