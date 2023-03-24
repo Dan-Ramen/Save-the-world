@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function(evt) {
 
     //Continue button
     contBtn.addEventListener('click', function(evt){
-        round.innerHTML = `Wave 1 : Player Turn`
+        round.textContent = `Wave ${roundNumber} : Player Turn`
         prompt.textContent = `The first Zetan ship is closing in! \r\n`;
         prompt.textContent += 'Will you Attack or Retreat?'
         flag = true;
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function(evt) {
 
             //Player turn
             if(flag === true){
-                console.log('Player Turn')
+                console.log(`Wave ${roundNumber} : Player Turn`)
 
                 // Player hitting an alien ship
                 if(Math.random() < player.accuracy){
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function(evt) {
                     aStats.textContent += `Firepower : ${alienFleet[0].firepower} \r\n`;
                     aStats.textContent += `Accuracy : ${alienFleet[0].accuracy}`;
                     prompt.textContent = `You hit ${alienFleet[0].name}! They have ${alienFleet[0].hullHp}HP left!`;
-                    console.log(`You hit ${alienFleet[0].name}! They have ${alienFleet[0].hullHp}HP left!`);
+                    console.log(`You hit ${alienFleet[0].name}! They have ${alienFleet[0].hullHp}HP!`);
                     flag = false;
 
                         // Player killing an alien ship
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function(evt) {
             //Alien turn
             if(flag === false){
                 round.textContent = `Wave ${roundNumber} : Zetan Attack`
-                console.log('Alien Turn')
+                console.log(`Wave ${roundNumber} : Alien Turn`)
 
                 // Alien hit registering
                 if(Math.random() < alienFleet[0].accuracy) {
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function(evt) {
                     // Player killed by alien
                     if(player.hullHp <= 0){
                         prompt.textContent = 'You Lose. \r\n';
-                        prompt.textContent += `The Zetans destroyed the ${player.name}..`
+                        prompt.textContent += `The Zetans destroyed the ${player.name}..`;
                         console.log(`${player.name} this is ground support do you read!...we lost ${player.name}...`)
                         break;
                     };
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function(evt) {
             //Alien hit missed
             }else if(Math.random() > alienFleet[0].accuracy){
                 prompt.textContent = `The ${alienFleet[0]} missed their attack!`
-                console.log(`The ${alienFleet[0]} missed their attack!`)
+                console.log(`The ${alienFleet[0].name} missed their attack!`)
                 flag = true
             };
             };
